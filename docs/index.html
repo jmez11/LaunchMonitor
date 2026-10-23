@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LaunchMonitor &mdash; OceanSideVR</title>
+<meta name="description" content="A tiny Windows tray app that opens new app windows on the monitor you launched them from. Built for multi-monitor Remote Desktop.">
+<link rel="icon" href="assets/icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="https://oceanside-vr.com/">
+    <img src="assets/icon.png" alt="LaunchMonitor icon" class="logo">
+    <span class="wordmark">LaunchMonitor</span>
+  </a>
+  <span class="byline">an <a href="https://oceanside-vr.com/">OceanSideVR</a> project</span>
+</header>
+<main>
+  <section class="hero">
+    <img src="assets/hero.webp" alt="" class="hero-banner">
+    <p class="badge">Free download</p>
+    <h1>Windows open where you launch them.</h1>
+    <p class="lede">LaunchMonitor is a tiny Windows tray app for multi-monitor setups &mdash; especially Remote Desktop. Click an app on your second monitor and its window appears there, not back on the primary. No install, no admin rights, nothing to configure.</p>
+    <div class="links">
+      <a class="btn" href="https://github.com/jmez11/LaunchMonitor/releases">Download for Windows</a>
+      <a class="btn ghost" href="https://github.com/jmez11/LaunchMonitor">GitHub</a>
+      <a class="btn ghost" href="https://github.com/jmez11/LaunchMonitor#how-it-chooses-a-monitor">How it works</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why this exists</h2>
+    <p>Windows decides where a new window opens, and in a multi-monitor RDP session that usually means the primary monitor &mdash; even when you clicked the icon on another screen. So every launch starts with dragging the window back where you wanted it.</p>
+    <p>LaunchMonitor watches where your mouse and keyboard activity happens, and when a new window appears it moves it to the monitor you launched it from. The window may flash on its original monitor for a moment before it moves.</p>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="steps">
+      <article class="card">
+        <p class="step-n">1</p>
+        <h3>Download and run</h3>
+        <p>Grab the portable ZIP from <a href="https://github.com/jmez11/LaunchMonitor/releases">Releases</a> (<code>win-x64</code> for ordinary PCs, <code>win-arm64</code> for Windows on ARM). Extract it anywhere and run <code>LaunchMonitor.exe</code>. The .NET runtime is bundled.</p>
+      </article>
+      <article class="card">
+        <p class="step-n">2</p>
+        <h3>Launch apps normally</h3>
+        <p>Click or keyboard-launch an app from any monitor. For keyboard launches, leave the pointer on that monitor when you press the key.</p>
+      </article>
+      <article class="card">
+        <p class="step-n">3</p>
+        <h3>It handles the rest</h3>
+        <p>New windows move to the launch monitor on their own. Right-click the tray icon to <strong>Pause</strong>, enable <strong>Start at sign-in</strong>, or <strong>Exit</strong>.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Under the hood</h2>
+    <table class="arch">
+      <tr><th>Component</th><th>What it does</th></tr>
+      <tr><td><code>LaunchMonitor.Core</code></td><td>Launch timing and window-placement math &mdash; no Windows dependencies, fully unit-tested</td></tr>
+      <tr><td><code>TrayApplication</code> / <code>WindowWatcher</code></td><td>Tray icon, low-level input hooks, new-window show events</td></tr>
+    </table>
+    <p class="note">It respects your windows: already-open windows, dialogs, menus, tool windows, and minimized windows are left alone, and dragging or resizing a new window cancels any remaining move attempts. It preserves window size and maximized state, clamping placement to the target monitor&rsquo;s work area.</p>
+    <p class="note">No network requests, no telemetry. Nothing about your windows, typing, or app usage is recorded to disk &mdash; input history is 256 timestamps kept in memory. The only change it ever makes outside itself is an optional per-user startup entry, and only if you enable it.</p>
+  </section>
+
+  <section>
+    <h2>Get it</h2>
+    <ol class="install">
+      <li>Download the portable ZIP from <a href="https://github.com/jmez11/LaunchMonitor/releases">Releases</a> (<code>win-x64</code> or <code>win-arm64</code>).</li>
+      <li>Extract it to any folder you can write to and run <code>LaunchMonitor.exe</code>.</li>
+      <li>For RDP: run it <strong>inside the remote Windows session</strong>, on the computer running the apps, with RDP&rsquo;s <strong>Use all my monitors</strong> option enabled so the remote desktop sees separate monitors.</li>
+    </ol>
+    <p class="note">The builds are unsigned, so Windows may show a publisher/reputation prompt on first run. Each logged-in session runs its own copy; a connection that presents one giant spanned monitor exposes no separate destinations to the app.</p>
+  </section>
+
+  <section>
+    <h2>Platform scope</h2>
+    <p>Built for multi-monitor Remote Desktop on Windows 10/11 and supported Windows Server versions. It also works on an ordinary local multi-monitor desktop.</p>
+    <div class="status-box">
+      <h3>Honest status</h3>
+      <p>This is launch correlation, not a Windows shell replacement. An app that routes a launch through another process, reuses a pre-created window, or sets its own position later can behave differently. The <a href="https://github.com/jmez11/LaunchMonitor#windowsrdp-acceptance-checks">acceptance checks</a> in the README describe what still needs real-machine validation &mdash; they are not claimed to have passed.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Documentation</h2>
+    <ul class="doclist">
+      <li><a href="https://github.com/jmez11/LaunchMonitor#readme">Full README &mdash; run guide, placement rules, and boundaries</a></li>
+      <li><a href="https://github.com/jmez11/LaunchMonitor#develop-and-build">Build it yourself with the .NET 10 SDK</a></li>
+      <li><a href="https://github.com/jmez11/LaunchMonitor/blob/main/LICENSE">MIT License</a></li>
+    </ul>
+  </section>
+</main>
+<footer>
+  <p>Project-owned code is licensed <a href="https://github.com/jmez11/LaunchMonitor/blob/main/LICENSE">MIT</a>.</p>
+  <p>&copy; 2026 OceanSideVR &middot; <a href="https://github.com/jmez11">GitHub</a> &middot; <a href="https://www.youtube.com/@OceanSide-VR">YouTube</a> &middot; <a href="https://oceanside-vr.com/">oceanside-vr.com</a></p>
+</footer>
+</body>
+</html>
