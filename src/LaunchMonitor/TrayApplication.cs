@@ -7,6 +7,7 @@ internal sealed class TrayApplication : ApplicationContext
     private const string StartupKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private readonly Control dispatcher = new();
     private readonly NotifyIcon tray;
+    private readonly Icon trayIcon;
     private readonly ContextMenuStrip menu = new();
     private readonly ToolStripMenuItem pause = new("Pause") { CheckOnClick = true };
     private readonly ToolStripMenuItem startup = new("Start at sign-in") { CheckOnClick = true };
@@ -17,9 +18,11 @@ internal sealed class TrayApplication : ApplicationContext
     {
         dispatcher.CreateControl();
         watcher = new WindowWatcher();
+        using var appIcon = new Icon(typeof(TrayApplication), "Assets.LaunchMonitor.ico");
+        trayIcon = new Icon(appIcon, SystemInformation.SmallIconSize);
         tray = new NotifyIcon
         {
-            Icon = SystemIcons.Application,
+            Icon = trayIcon,
             Text = "LaunchMonitor — new windows follow your launch monitor",
             ContextMenuStrip = menu,
             Visible = true
@@ -105,6 +108,7 @@ internal sealed class TrayApplication : ApplicationContext
             watcher.Dispose();
             tray.Visible = false;
             tray.Dispose();
+            trayIcon.Dispose();
             menu.Dispose();
             dispatcher.Dispose();
         }

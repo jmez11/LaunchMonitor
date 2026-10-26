@@ -6,10 +6,12 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationIcon>Assets/LaunchMonitor.ico</ApplicationIcon>
     <Version>0.1.0</Version>
     <Description>Open new windows on the monitor you launched them from.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets/LaunchMonitor.ico" />
     <ProjectReference Include="../LaunchMonitor.Core/LaunchMonitor.Core.csproj" />
   </ItemGroup>
 </Project>
